@@ -1,9 +1,10 @@
 // Import necessary modules from React and React Router
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const Register = () => {
+   const navigator = useNavigate(); // Initialize the navigate function for navigation
    // useState hook to manage form input values: username, email, and password
    const [formData, setFormData] = useState({
       username: "",
@@ -14,9 +15,12 @@ const Register = () => {
    // useEffect runs once when the component mounts
    // Sets the page title and auto-focuses the username field
    useEffect(() => {
+      if (localStorage.getItem("user") !== null) {
+         navigator("/dashboard"); // Redirect to dashboard if user is already logged in
+      }
       document.title = "Register - Rafid 97";
       document.querySelector("input[name='username']")?.focus();
-   }, []);
+   }, [navigator]);
 
    // Generic function to handle input changes
    // It updates the specific field in formData based on the input name
@@ -56,10 +60,9 @@ const Register = () => {
             .catch((error) => {
                console.error("Error:", error);
             });
-      }
+      };
 
       registerFunction(); // Call the register function
-      
    };
 
    return (
